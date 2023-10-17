@@ -36,7 +36,7 @@ cleanup: ## cleanup network and volumes for openc3
 build: ## build the containers for openc3
 	$(OPENC3_SCRIPT) build
 
-run: build ## run the prebuilt containers for openc3
+run: ## run the prebuilt containers for openc3
 	$(OPENC3_SCRIPT) run
 
 dev: ## run openc3 in a dev mode
