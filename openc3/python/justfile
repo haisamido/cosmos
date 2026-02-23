@@ -197,11 +197,11 @@ deps:
 
 # Update dependencies to latest compatible versions
 update:
-    uv lock --upgrade
+    uv sync --upgrade
 
 # Update a specific package
 update-package PACKAGE:
-    uv lock --upgrade-package {{ PACKAGE }}
+    uv sync --upgrade-package {{ PACKAGE }}
 
 # Add a new dependency
 add PACKAGE:
