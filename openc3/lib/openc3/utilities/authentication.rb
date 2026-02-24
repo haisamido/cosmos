@@ -33,7 +33,18 @@ module OpenC3
         raise OpenC3AuthenticationError, "Authentication requires environment variable OPENC3_API_PASSWORD"
       end
       @service = password == ENV['OPENC3_SERVICE_PASSWORD']
-      response = _make_auth_request(password)
+      retries = 0
+      begin
+        response = _make_auth_request(password)
+      rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+        retries += 1
+        if retries <= 3
+          STDOUT.puts "Authentication request failed (attempt #{retries}/3): #{e.message}. Retrying in #{retries}s..."
+          sleep(retries)
+          retry
+        end
+        raise
+      end
       @token = response.body
       if @token.nil? or @token.empty?
         raise OpenC3AuthenticationError, "Authentication failed. Please check the password in the environment variable OPENC3_API_PASSWORD"
